@@ -1,5 +1,8 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:tugas3/model/response_wisata_model.dart';
+import 'package:tugas3/screen/edit_wisata.dart';
 
 Widget itemWisata(Datum data) {
   return Card(
@@ -17,7 +20,7 @@ Widget itemWisata(Datum data) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
+              children: [
                 Text(
                   data.nama,
                   style: const TextStyle(fontSize: 16.0),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tugas3/model/response_wisata_model.dart';
+import 'package:tugas3/screen/edit_wisata.dart';
 class DetailScreen extends StatelessWidget {
   const DetailScreen({Key? key, required this.data}) : super(key: key);
 
   final Datum data;
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +94,16 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),//Container for Photos
+            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () async {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => EditWisata(data: data)));
+        },
       ),
     );
   }

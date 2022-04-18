@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tugas3/model/response_wisata_model.dart';
 import 'package:tugas3/screen/halaman_beranda.dart';
 import 'package:http/http.dart'as http;
 import 'package:tugas3/service/api_service.dart';
+import 'package:tugas3/widgets/detail_wisata.dart';
 
-class TambahWisata extends StatelessWidget {
+class EditWisata extends StatelessWidget {
+  final Datum data;
 
+  EditWisata({required this.data});
   final _formKey = GlobalKey<FormState>();
   TextEditingController _namaController = TextEditingController();
   TextEditingController _lokasiController = TextEditingController();
@@ -18,8 +22,8 @@ class TambahWisata extends StatelessWidget {
   TextEditingController _image2Controller = TextEditingController();
   TextEditingController _image3Controller = TextEditingController();
   TextEditingController _image4Controller = TextEditingController();
-  Future simpanWisata() async {
-    final response = await http.post(Uri.parse("http://127.0.0.1:8000/api/lists"),body: {
+  Future ubahWisata() async {
+    final response = await http.put(Uri.parse("http://127.0.0.1:8000/api/lists/" + data.id.toString()),body: {
       "nama": _namaController.text,
       "lokasi": _lokasiController.text,
       "hari": _hariController.text,
@@ -38,7 +42,7 @@ class TambahWisata extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tambah Wisata"),
+        title: Text("Edit Wisata"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -50,7 +54,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _namaController,
+                    controller: _namaController..text = data.nama,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Nama Wisata"),
@@ -65,7 +69,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _lokasiController,
+                    controller: _lokasiController..text = data.lokasi,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Lokasi Wisata"),
@@ -80,7 +84,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _hariController,
+                    controller: _hariController..text = data.hari,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Hari Buka Wisata"),
@@ -95,7 +99,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _jamController,
+                    controller: _jamController..text = data.jam,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Jam Buka Wisata"),
@@ -110,7 +114,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _hargaController,
+                    controller: _hargaController..text = data.harga,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Harga Tiket"),
@@ -125,7 +129,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _deskripsiController,
+                    controller: _deskripsiController..text = data.deskripsi,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Deskripsi Wisata"),
@@ -140,7 +144,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _image1Controller,
+                    controller: _image1Controller..text = data.image1Url,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Gambar 1 Wisata"),
@@ -155,7 +159,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _image2Controller,
+                    controller: _image2Controller..text = data.image2Url,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Gambar 2 Wisata"),
@@ -170,7 +174,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _image3Controller,
+                    controller: _image3Controller..text = data.image3Url,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Gambar 3 Wisata"),
@@ -185,7 +189,7 @@ class TambahWisata extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.00),
                   child: TextFormField(
-                    controller: _image4Controller,
+                    controller: _image4Controller..text = data.image4Url,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),labelText: "Gambar 4 Wisata"),
@@ -199,15 +203,15 @@ class TambahWisata extends StatelessWidget {
                 ),
                 ElevatedButton(onPressed: () {
                   if(_formKey.currentState!.validate()){
-                    simpanWisata().then((value) {
+                    ubahWisata().then((value) {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HalamanBeranda()));
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text("Wisata berhasil ditambah"),
-                          ));
+                            content: Text("Wisata berhasil diubah"),
+                      ));
                     });
                   }
-                }, child: Text("Simpan"))
+                }, child: Text("Ubah"))
               ],
             ),
           ),
