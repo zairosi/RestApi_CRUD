@@ -1,17 +1,39 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:tugas3/model/response_wisata_model.dart';
 import 'package:tugas3/screen/edit_wisata.dart';
+import 'package:http/http.dart' as http;
+import 'package:tugas3/screen/halaman_beranda.dart';
 class DetailScreen extends StatelessWidget {
   const DetailScreen({Key? key, required this.data}) : super(key: key);
 
   final Datum data;
 
+  Future hapusWisata(String wisataId) async {
+    String _url = "http://127.0.0.1:8000/api/lists/" + wisataId;
+    var response = await http.delete(Uri.parse(_url));
 
+    return json.decode(response.body);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Daftar Wisata'),
+        title: Text('Detail Wisata'),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () async {
+                hapusWisata(data.id.toString()).then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HalamanBeranda()));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Wisata berhasil dihapus"),
+                      ));
+                });
+              },
+              icon: Icon(Icons.delete))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
